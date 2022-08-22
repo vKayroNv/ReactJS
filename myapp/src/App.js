@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Link, Routes } from 'react-router-dom';
 import Profile from './components/Profile';
 import Chats from './components/Chats';
 import Home from './components/Home';
+import Header from './components/Header';
   
 
 function App() {
@@ -34,40 +35,13 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/profile">profile</Link>
-          </li>
-          <li>
-            <Link to="/chats">chats</Link>
-          </li>
-        </ul>
-
+        <Header/>
         <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="/profile" element={<Profile />}/>
           <Route path="/chats" element={<Chats />}/>
         </Routes>
       </BrowserRouter>
-      {/*<Grid container spacing={2}>
-        <Grid item xs={3}>
-          <List>
-            <ListItem>Тест1</ListItem>
-            <ListItem>Тест2</ListItem>
-          </List>
-        </Grid>
-        <Grid item xs={9}>
-          <List>
-            {messagesList.map(({author, messageText}, index) => <Message key={index} author={author} messageText={messageText}/>)}
-          </List>
-        </Grid>
-        <Grid item xs={12}>
-          <MessageInput onChangeMessage={newMessage}/>
-        </Grid>
-      </Grid>*/}
     </>
   );
 }

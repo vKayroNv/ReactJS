@@ -1,8 +1,13 @@
-import './App.css';
+import './css/App.css';
 import {useState, useEffect} from 'react';
-import Message from './Message';
-import { MessageInput } from './MessageInput';
+import Message from './components/Message';
+import { MessageInput } from './components/MessageInput';
 import { Grid, List, ListItem } from '@mui/material';
+import { BrowserRouter, Route, Link, Routes } from 'react-router-dom';
+
+import Profile from './components/Profile';
+import Chats from './components/Chats';
+import Home from './components/Home';
   
 
 function App() {
@@ -28,7 +33,26 @@ function App() {
 
   return (
     <>
-      <Grid container spacing={2}>
+      <BrowserRouter>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/profile">profile</Link>
+          </li>
+          <li>
+            <Link to="/chats">chats</Link>
+          </li>
+        </ul>
+
+        <Routes>
+          <Route path="/" element={<Home />}/>
+          <Route path="/profile" element={<Profile />}/>
+          <Route path="/chats" element={<Chats />}/>
+        </Routes>
+      </BrowserRouter>
+      {/*<Grid container spacing={2}>
         <Grid item xs={3}>
           <List>
             <ListItem>Тест1</ListItem>
@@ -43,7 +67,7 @@ function App() {
         <Grid item xs={12}>
           <MessageInput onChangeMessage={newMessage}/>
         </Grid>
-      </Grid>
+      </Grid>*/}
     </>
   );
 }

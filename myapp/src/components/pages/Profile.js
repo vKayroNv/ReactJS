@@ -1,7 +1,7 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { Button, TextField, Container } from '@mui/material';
 
-export default function Profile(props){
+export default function Profile(props) {
 
   const [username, setUsername] = useState(props.username);
 

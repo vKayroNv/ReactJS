@@ -1,9 +1,10 @@
 import {useState, useEffect} from 'react';
-import { MessageInput } from './MessageInput';
 import { Grid } from '@mui/material';
-import ChatsBlock from './ChatsBlock';
-import MessagesBlock from './MessagesBlock';
 import { useParams } from 'react-router-dom';
+
+import MessageInput from '../MessageInput';
+import ChatsBlock from '../ChatsBlock';
+import MessagesBlock from '../MessagesBlock';
 
 export default function Chats(props){
 

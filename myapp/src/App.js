@@ -1,10 +1,10 @@
 import './css/App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Profile from './components/Profile';
-import Chats from './components/Chats';
-import Home from './components/Home';
-import Header from './components/Header';
+import Profile from './components/pages/Profile';
+import Chats from './components/pages/Chats';
+import Home from './components/pages/Home';
+import Header from './components/pages/Header';
 import { useState } from 'react';
   
 const initialChats = [

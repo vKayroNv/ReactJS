@@ -1,15 +1,20 @@
 import {useState, useEffect} from 'react';
-import Message from './Message';
 import { MessageInput } from './MessageInput';
-import { Grid, List, ListItem } from '@mui/material';
+import { Grid } from '@mui/material';
+import ChatsBlock from './ChatsBlock';
+import MessagesBlock from './MessagesBlock';
+import { useParams } from 'react-router-dom';
 
-export default function Chats(){
+export default function Chats(props){
+
+  const [chatsList, setChatsList] = useState(props.chatsList);
+  const { chatId } = useParams();
 
   const [messagesList, setMessagesList] = useState([]);
   const botName = 'bot';
 
   const newMessage = (input) => {
-    setMessagesList(messagesList => { return [...messagesList,input]})
+    setMessagesList(messagesList => { return [...messagesList, {author: props.username, messageText: input}]})
   }
 
   useEffect(()=>{
@@ -27,15 +32,14 @@ export default function Chats(){
   return(
     <Grid container spacing={2}>
       <Grid item xs={3}>
-        <List>
-          <ListItem>Тест1</ListItem>
-          <ListItem>Тест2</ListItem>
-        </List>
+        <ChatsBlock chatsList={chatsList}/>
       </Grid>
       <Grid item xs={9}>
-        <List>
-          {messagesList.map(({author, messageText}, index) => <Message key={index} author={author} messageText={messageText}/>)}
-        </List>
+        {
+          chatId === undefined || chatId > props.chatsList.length - 1 ?
+            <MessagesBlock /> :
+            <MessagesBlock messagesList={props.chatsList[chatId].messagesList}/>
+        }
       </Grid>
       <Grid item xs={12}>
         <MessageInput onChangeMessage={newMessage}/>

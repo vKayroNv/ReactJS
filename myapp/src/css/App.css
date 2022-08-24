@@ -1,27 +1,27 @@
-body {
+html, body {
   background-color: #282c34;
+  height: 100%;
 }
 
-.MuiGrid-root {
-  padding: 20px;
+.middle-block {
+  padding: 0px 10px;
+  display: flex;
+  flex-direction: row;
+  height: 80vh;
+  color: white;
+}
+
+.chats-block {
+  border: 1px solid white;
+  flex: 1;
+}
+
+.messages-block {
+  border: 1px solid white;
+  flex: 4;
 }
 
 .MuiList-root {
-  color: white;
-  height: 60vh;
   overflow: auto;
-  overflow-x: hidden;
-  border: 1px solid #bdbdbd;
-  border-radius: 0.25rem;
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-}
-
-.input-area {
-  margin: 20px;
-  display: flex;
-  flex: auto;
-  flex-direction: column;
+  height: 78vh;
 }

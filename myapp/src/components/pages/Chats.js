@@ -31,20 +31,22 @@ export default function Chats(props){
   },[messagesList])
 
   return(
-    <Grid container spacing={2}>
-      <Grid item xs={3}>
-        <ChatsBlock chatsList={chatsList}/>
-      </Grid>
-      <Grid item xs={9}>
-        {
-          chatId === undefined || chatId > props.chatsList.length - 1 ?
-            <MessagesBlock /> :
-            <MessagesBlock messagesList={props.chatsList[chatId].messagesList}/>
-        }
-      </Grid>
-      <Grid item xs={12}>
-        <MessageInput onChangeMessage={newMessage}/>
-      </Grid>
-    </Grid>
+      <>
+        <div className='middle-block'>
+          <div className='chats-block'>
+            <ChatsBlock chatsList={chatsList}/>
+          </div>
+          <div className='messages-block'>
+            {
+              chatId === undefined || chatId > props.chatsList.length - 1 ?
+                <MessagesBlock /> :
+                <MessagesBlock messagesList={props.chatsList[chatId].messagesList}/>
+            }
+          </div>
+        </div>
+        <div className='message-input'>
+          <MessageInput onChangeMessage={newMessage}/>
+        </div>
+      </>
   );
 }

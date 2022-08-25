@@ -1,49 +1,53 @@
-import './App.css';
-import {useState, useEffect} from 'react';
-import Message from './Message';
-import { MessageInput } from './MessageInput';
-import { Grid, List, ListItem } from '@mui/material';
+import './css/App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import Profile from './components/pages/Profile';
+import Chats from './components/pages/Chats';
+import Home from './components/pages/Home';
+import Header from './components/pages/Header';
+import { useState } from 'react';
   
+const initialChats = [
+  {
+    username: "user1",
+    messagesList: [
+      {
+        username: "bot",
+        messageText: "Hello"
+      }
+    ]
+  },
+  {
+    username: "user2",
+    messagesList: [
+      {
+        username: "user2",
+        messageText: "Hello"
+      }
+    ]
+  }
+];
 
 function App() {
 
-  const [messagesList, setMessagesList] = useState([]);
-  const botName = 'bot';
+  const [username, setUsername] = useState('testuser');
+  const [chatsList, setChatsList] = useState(initialChats);
 
-  const newMessage = (input) => {
-    setMessagesList(messagesList => { return [...messagesList,input]})
-  }
-
-  useEffect(()=>{
-    if (messagesList.length === 0)
-      return;
-    const lastMessage = messagesList[messagesList.length - 1];
-
-    if (lastMessage.author && lastMessage.author !== botName) {
-        setTimeout(()=>setMessagesList(messages => {
-          return [...messages, {author: botName, messageText: `Здравствуйте, ${lastMessage.author}!`}]
-      }), 2000)
-    }
-  },[messagesList])
+  const changeUsername = input => {
+    setUsername(input);
+  };
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={3}>
-          <List>
-            <ListItem>Тест1</ListItem>
-            <ListItem>Тест2</ListItem>
-          </List>
-        </Grid>
-        <Grid item xs={9}>
-          <List>
-            {messagesList.map(({author, messageText}, index) => <Message key={index} author={author} messageText={messageText}/>)}
-          </List>
-        </Grid>
-        <Grid item xs={12}>
-          <MessageInput onChangeMessage={newMessage}/>
-        </Grid>
-      </Grid>
+      <BrowserRouter>
+        <Header/>
+        <Routes>
+          <Route path="/" element={<Home />}/>
+          <Route path="/profile" element={<Profile username={username} onChangeUsername={changeUsername} />}/>
+          <Route path="/chats" element={<Chats username={username} chatsList={chatsList} />}/>
+          <Route path="/chats/:chatId" element={<Chats username={username} chatsList={chatsList}/>}/>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

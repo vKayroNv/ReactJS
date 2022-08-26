@@ -1,18 +1,22 @@
 import { useState } from 'react';
-import { Button, TextField, Container } from '@mui/material';
+import { Button, TextField, Container, Checkbox, FormControlLabel } from '@mui/material';
 
 import { useSelector, useDispatch } from 'react-redux'
 import { changeUsername } from '../../store/usernameActions';
+import { changeAnswerphoneState } from '../../store/answerphoneActions';
 
 export default function Profile() {
 
-  const username = useSelector((state) => state.username.value)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [tempUsername, setTempUsername] = useState(username);
+  const [tempUsername, setTempUsername] = useState(useSelector((state) => state.username.value));
+  const [tempAnswerphone, setTempAnswerphone] = useState(useSelector((state) => state.answerphone.value));
 
   const tempChangeUsername = input => {
     setTempUsername(input);
+  }
+  const tempChangeAnswerphone = () => {
+    setTempAnswerphone(!tempAnswerphone);
   }
 
   return(
@@ -20,10 +24,12 @@ export default function Profile() {
       <br/>
       <Container>
         <TextField autoFocus fullWidth label="Ваше имя" variant="filled" value={tempUsername} onChange={event => tempChangeUsername(event.target.value)}/>
+          <FormControlLabel control={<Checkbox checked={tempAnswerphone} onChange={event => tempChangeAnswerphone()} />} label="Включить автоответчик" />
         <Button fullWidth variant="contained" onClick={() => { 
           dispatch(changeUsername(tempUsername));
-          alert('Имя изменено');
-        }}>Изменить</Button>
+          dispatch(changeAnswerphoneState(tempAnswerphone))
+          alert('Изменения сохранены');
+        }}>Сохранить</Button>
       </Container>
     </>
   );

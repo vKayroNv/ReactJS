@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState} from 'react';
 import { Button, TextField, Container } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,6 +11,7 @@ export default function MessageInput() {
   const [messageText, setMessageText] = useState('');
   const { chatId } = useParams();
   const chatCount = useSelector((state) => state.chats.value.length);
+  const answerphone = useSelector((state) => state.answerphone.value);
 
   const disableInput = chatId === undefined || chatId > chatCount - 1 ? true : false;
 
@@ -22,6 +23,17 @@ export default function MessageInput() {
         messageText: messageText
       }
     }));
+
+    if (answerphone)
+      setTimeout(() => {
+        dispatch(addMessage({
+          index: chatId,
+          message: {
+            fromMe: false,
+            messageText: "Hello!"
+          }
+        }));
+      }, 2000);
   }
 
   return (

@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { Button, TextField, Container, createTheme, ThemeProvider } from '@mui/material';
+import { Button, TextField, Container } from '@mui/material';
 
 export default function MessageInput(props) {
   const [messageText, setMessageText] = useState('');

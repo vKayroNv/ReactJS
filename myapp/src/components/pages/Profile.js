@@ -1,21 +1,27 @@
 import { useState } from 'react';
 import { Button, TextField, Container } from '@mui/material';
 
-export default function Profile(props) {
+import { useSelector, useDispatch } from 'react-redux'
+import { changeUsername } from '../../store/usernameActions';
 
-  const [username, setUsername] = useState(props.username);
+export default function Profile() {
 
-  const changeUsername = input => {
-    setUsername(input);
+  const username = useSelector((state) => state.username.value)
+  const dispatch = useDispatch()
+
+  const [tempUsername, setTempUsername] = useState(username);
+
+  const tempChangeUsername = input => {
+    setTempUsername(input);
   }
 
   return(
     <>
       <br/>
       <Container>
-        <TextField autoFocus fullWidth label="Ваше имя" variant="filled" value={username} onChange={event => changeUsername(event.target.value)}/>
+        <TextField autoFocus fullWidth label="Ваше имя" variant="filled" value={tempUsername} onChange={event => tempChangeUsername(event.target.value)}/>
         <Button fullWidth variant="contained" onClick={() => { 
-          props.onChangeUsername(username);
+          dispatch(changeUsername(tempUsername));
           alert('Имя изменено');
         }}>Изменить</Button>
       </Container>

@@ -1,10 +1,15 @@
 import { List } from '@mui/material';
 import ChatElement from './ChatElement';
 
-export default function ChatsBlock({chatsList}){
+import { useSelector } from 'react-redux'
+
+export default function ChatsBlock(){
+
+  const chatsNames = useSelector((state) => state.chats.value.map(obj => obj.username));
+
   return(
     <List>
-      {chatsList.map(({username}, index) => <ChatElement key={index} chatId={index} name={username} />)}
+      {chatsNames.map((value, index) => <ChatElement key={index} chatId={index} name={value} />)}
     </List>  
   );
 }

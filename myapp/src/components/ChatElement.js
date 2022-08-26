@@ -5,12 +5,12 @@ import ClearIcon from '@mui/icons-material/Clear';
 export default function ChatElement(props) {
   return(
     <ListItem disablePadding>
-      <ListItemButton variant="outlined" color="inherit" component={Link} to={`/chats/${props.chatId}`}>
+      <ListItemButton component={Link} to={`/chats/${props.chatId}`} style={{width: "inherit"}}>
         {props.name}
       </ListItemButton>
-      {/* <Button variant="contained" color="error" style={{maxWidth: '36.5px', minWidth: '36.5px'}}>
-        <ClearIcon/>
-      </Button> */}
+      <ListItemButton >
+        <ClearIcon />
+      </ListItemButton>
     </ListItem>
   )
 }

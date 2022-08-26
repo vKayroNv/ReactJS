@@ -38,7 +38,7 @@ export default function MessageInput() {
 
   return (
       <Container>
-        <TextField disabled={disableInput} fullWidth label="Сообщение" variant="filled" value={messageText} onChange={event => setMessageText(event.target.value)}/>
+        <TextField disabled={disableInput} fullWidth label="Сообщение" variant="filled" value={messageText} onChange={event => setMessageText(event.target.value)} inputProps={{style: {color: "white"}}} />
         <Button disabled={disableInput} fullWidth variant="contained" onClick={() => { 
             if (messageText) {
                 sendMessage();

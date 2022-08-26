@@ -26,9 +26,20 @@ export const chatsSlice = createSlice({
     ]
   },
   reducers: {
+    addChat: (state, action) => {
+      const newChat = {
+        username: action.payload,
+        messagesList: []
+      };
+      state.value = [...state.value, newChat]
+    },
+    deleteChat:(state, action) => {
+      state.value = state.value.filter((obj, index) => index !== action.payload);
+    },
+    addMessage:()=>{}
   },
 })
 
-//export const { getChatsNames } = chatsSlice.actions
+export const { addChat, deleteChat, addMessage } = chatsSlice.actions
 
 export default chatsSlice.reducer

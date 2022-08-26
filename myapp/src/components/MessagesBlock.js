@@ -8,13 +8,20 @@ export default function MessagesBlock() {
 
   const { chatId } = useParams();
   const chats = useSelector((state) => state.chats.value);
+  const username = useSelector((state) => state.username.value);
 
   if (chatId === undefined || chatId > chats.length - 1)
     return <List>Выберите чат</List>
 
+  const currentChat = chats[chatId];
+
   return(
     <List>
-      {chats[chatId].messagesList.map(({username, messageText}, index) => <Message key={index} author={username} messageText={messageText}/>)}
+      {currentChat.messagesList.map(({fromMe, messageText}, index) => (
+        fromMe ?
+          <Message key={index} author={username} messageText={messageText}/> :
+          <Message key={index} author={currentChat.username} messageText={messageText}/> 
+      ))}
     </List>
   );
 }

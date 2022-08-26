@@ -1,15 +1,35 @@
 import {useState} from 'react';
 import { Button, TextField, Container } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 
-export default function MessageInput(props) {
+import { addMessage } from '../store/chatsActions';
+import { useParams } from 'react-router-dom';
+
+export default function MessageInput() {
+
+  const dispatch = useDispatch();
   const [messageText, setMessageText] = useState('');
+  const { chatId } = useParams();
+  const chatCount = useSelector((state) => state.chats.value.length);
+
+  const disableInput = chatId === undefined || chatId > chatCount - 1 ? true : false;
+
+  const sendMessage = () => {
+    dispatch(addMessage({
+      index: chatId,
+      message: {
+        fromMe: true,
+        messageText: messageText
+      }
+    }));
+  }
 
   return (
       <Container>
-        <TextField disabled fullWidth label="Сообщение" variant="filled" value={messageText} onChange={event => setMessageText(event.target.value)}/>
-        <Button disabled fullWidth variant="contained" onClick={() => { 
+        <TextField disabled={disableInput} fullWidth label="Сообщение" variant="filled" value={messageText} onChange={event => setMessageText(event.target.value)}/>
+        <Button disabled={disableInput} fullWidth variant="contained" onClick={() => { 
             if (messageText) {
-                props.onChangeMessage(messageText);
+                sendMessage();
                 setMessageText('');
             }
         }}>Отправить</Button>

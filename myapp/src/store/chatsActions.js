@@ -9,16 +9,11 @@ export const chatsSlice = createSlice({
         username: "user1",
         messagesList: [
           {
-            username: "bot",
+            fromMe: true,
             messageText: "Hello"
-          }
-        ]
-      },
-      {
-        username: "user2",
-        messagesList: [
+          },
           {
-            username: "user2",
+            fromMe: false,
             messageText: "Hello"
           }
         ]
@@ -33,10 +28,15 @@ export const chatsSlice = createSlice({
       };
       state.value = [...state.value, newChat]
     },
-    deleteChat:(state, action) => {
+    deleteChat: (state, action) => {
       state.value = state.value.filter((obj, index) => index !== action.payload);
     },
-    addMessage:()=>{}
+    addMessage: (state, action) => {
+      const chatId = action.payload.index;
+      const message = action.payload.message;
+
+      state.value[chatId].messagesList = [...state.value[chatId].messagesList, message];
+    }
   },
 })
 

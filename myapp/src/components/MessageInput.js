@@ -1,19 +1,20 @@
 import { useState} from 'react';
 import { Button, TextField, Container } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 import { addMessage } from '../store/chatsActions';
 import { useParams } from 'react-router-dom';
+import { getAnswerphone, getChatsCount } from '../store/selectors';
 
 export default function MessageInput() {
 
   const dispatch = useDispatch();
   const [messageText, setMessageText] = useState('');
   const { chatId } = useParams();
-  const chatCount = useSelector((state) => state.chats.value.length);
-  const answerphone = useSelector((state) => state.answerphone.value);
+  const chatsCount = useSelector(getChatsCount, shallowEqual);
+  const answerphone = useSelector(getAnswerphone, shallowEqual);
 
-  const disableInput = chatId === undefined || chatId > chatCount - 1 ? true : false;
+  const disableInput = chatId === undefined || chatId > chatsCount - 1 ? true : false;
 
   const sendMessage = () => {
     dispatch(addMessage({

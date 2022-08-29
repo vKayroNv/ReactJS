@@ -1,13 +1,14 @@
 import { Button, List } from '@mui/material';
 import ChatElement from './ChatElement';
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { addChat } from '../store/chatsActions';
+import { getChatsNames } from '../store/selectors';
 
 export default function ChatsBlock(){
 
   const dispatch = useDispatch();
-  const chatsNames = useSelector((state) => state.chats.value.map(obj => obj.username));
+  const chatsNames = useSelector(getChatsNames, shallowEqual);
 
   const createChat = () => {
     const name = prompt("Введите название чата");

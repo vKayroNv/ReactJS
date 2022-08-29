@@ -1,14 +1,15 @@
 import { useParams } from 'react-router-dom';
 import { List } from '@mui/material';
-import { useSelector } from 'react-redux'
+import { useSelector, shallowEqual } from 'react-redux'
 
 import Message from './Message'
+import { getChats, getUsername } from '../store/selectors';
 
 export default function MessagesBlock() {
 
   const { chatId } = useParams();
-  const chats = useSelector((state) => state.chats.value);
-  const username = useSelector((state) => state.username.value);
+  const chats = useSelector(getChats, shallowEqual);
+  const username = useSelector(getUsername, shallowEqual);
 
   if (chatId === undefined || chatId > chats.length - 1)
     return <List>Выберите чат</List>

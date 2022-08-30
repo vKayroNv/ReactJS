@@ -13,7 +13,7 @@ export default function ChatsBlock(){
   const createChat = () => {
     const name = prompt("Введите название чата");
 
-    if (name === undefined || name === '') {
+    if (!name) {
       alert("Название чата не было введено");
       return;
     }

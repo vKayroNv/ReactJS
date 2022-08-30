@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Button, TextField, Container, Checkbox, FormControlLabel } from '@mui/material';
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { changeUsername } from '../../store/usernameActions';
 import { changeAnswerphoneState } from '../../store/answerphoneActions';
+import { getAnswerphone, getUsername } from '../../store/selectors';
 
 export default function Profile() {
 
   const dispatch = useDispatch();
 
-  const [tempUsername, setTempUsername] = useState(useSelector((state) => state.username.value));
-  const [tempAnswerphone, setTempAnswerphone] = useState(useSelector((state) => state.answerphone.value));
+  const [tempUsername, setTempUsername] = useState(useSelector(getUsername, shallowEqual));
+  const [tempAnswerphone, setTempAnswerphone] = useState(useSelector(getAnswerphone, shallowEqual));
 
   const tempChangeUsername = input => {
     setTempUsername(input);

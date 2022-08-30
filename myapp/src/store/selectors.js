@@ -5,14 +5,14 @@ export function getChatsCount(state) {
   return state.chats.value.length;
 }
 
-export function getChatsNames(state) {
-  return state.chats.value.map(obj => obj.username);
-}
-
 export function getAnswerphone(state) {
   return state.answerphone.value;
 }
 
 export function getUsername(state) {
   return state.username.value;
+}
+
+export function getMessagesByUserId(state, id) {
+  return state.messages.value.filter(obj => obj.chatId === id);
 }

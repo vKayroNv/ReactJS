@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { v4 as uuidv4 } from 'uuid';
 
 export const chatsSlice = createSlice({
   name: 'chats',
@@ -6,40 +7,25 @@ export const chatsSlice = createSlice({
     value: 
     [
       {
+        id: uuidv4(),
         username: "user1",
-        messagesList: [
-          {
-            fromMe: true,
-            messageText: "Hello"
-          },
-          {
-            fromMe: false,
-            messageText: "Hello"
-          }
-        ]
       }
     ]
   },
   reducers: {
     addChat: (state, action) => {
       const newChat = {
-        username: action.payload,
-        messagesList: []
+        id: uuidv4(),
+        username: action.payload
       };
       state.value = [...state.value, newChat]
     },
     deleteChat: (state, action) => {
-      state.value = state.value.filter((obj, index) => index !== action.payload);
-    },
-    addMessage: (state, action) => {
-      const chatId = action.payload.index;
-      const message = action.payload.message;
-
-      state.value[chatId].messagesList = [...state.value[chatId].messagesList, message];
+      state.value = state.value.filter((obj) => obj.id !== action.payload);
     }
   },
 })
 
-export const { addChat, deleteChat, addMessage } = chatsSlice.actions
+export const { addChat, deleteChat } = chatsSlice.actions
 
 export default chatsSlice.reducer

@@ -2,37 +2,33 @@ import { useState} from 'react';
 import { Button, TextField, Container } from '@mui/material';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
-import { addMessage } from '../store/chatsActions';
+import { addMessage } from '../store/messagesActions';
 import { useParams } from 'react-router-dom';
-import { getAnswerphone, getChatsCount } from '../store/selectors';
+import { getAnswerphone, getChats } from '../store/selectors';
 
 export default function MessageInput() {
 
   const dispatch = useDispatch();
   const [messageText, setMessageText] = useState('');
   const { chatId } = useParams();
-  const chatsCount = useSelector(getChatsCount, shallowEqual);
+  const chats = useSelector(getChats, shallowEqual);
   const answerphone = useSelector(getAnswerphone, shallowEqual);
 
-  const disableInput = chatId === undefined || chatId > chatsCount - 1 ? true : false;
+  const disableInput = chatId === undefined || !chats.some(obj => obj.id === chatId) ? true : false;
 
   const sendMessage = () => {
     dispatch(addMessage({
-      index: chatId,
-      message: {
-        fromMe: true,
-        messageText: messageText
-      }
+      chatId: chatId,
+      fromMe: true,
+      message: messageText
     }));
 
     if (answerphone)
       setTimeout(() => {
         dispatch(addMessage({
-          index: chatId,
-          message: {
-            fromMe: false,
-            messageText: "Hello!"
-          }
+          chatId: chatId,
+          fromMe: false,
+          message: "Hello!"
         }));
       }, 2000);
   }

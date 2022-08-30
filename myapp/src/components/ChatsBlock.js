@@ -3,12 +3,12 @@ import ChatElement from './ChatElement';
 
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { addChat } from '../store/chatsActions';
-import { getChatsNames } from '../store/selectors';
+import { getChats } from '../store/selectors';
 
 export default function ChatsBlock(){
 
   const dispatch = useDispatch();
-  const chatsNames = useSelector(getChatsNames, shallowEqual);
+  const chats = useSelector(getChats, shallowEqual);
 
   const createChat = () => {
     const name = prompt("Введите название чата");
@@ -25,7 +25,7 @@ export default function ChatsBlock(){
     <>
       <Button fullWidth color="inherit" size="large" onClick={createChat}>Добавить чат</Button>
       <List>
-        {chatsNames.map((value, index) => <ChatElement key={index} chatId={index} name={value} />)}
+        {chats.map((value, index) => <ChatElement key={index} chatId={value.id} name={value.username} />)}
       </List>
     </>
   );

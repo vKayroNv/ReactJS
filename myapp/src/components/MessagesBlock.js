@@ -3,7 +3,7 @@ import { List } from '@mui/material';
 import { useSelector, shallowEqual } from 'react-redux'
 
 import Message from './Message'
-import { getChats, getUsername } from '../store/selectors';
+import { getChats, getUsername, getMessagesByUserId } from '../store/selectors';
 
 export default function MessagesBlock() {
 
@@ -11,17 +11,17 @@ export default function MessagesBlock() {
   const chats = useSelector(getChats, shallowEqual);
   const username = useSelector(getUsername, shallowEqual);
 
-  if (chatId === undefined || chatId > chats.length - 1)
-    return <List>Выберите чат</List>
+  const messages = useSelector((state) => getMessagesByUserId(state, chatId), shallowEqual);
 
-  const currentChat = chats[chatId];
+  if (chatId === undefined || !chats.some(obj => obj.id === chatId))
+    return <List>Выберите чат</List>
 
   return(
     <List>
-      {currentChat.messagesList.map(({fromMe, messageText}, index) => (
+      {messages.map(({fromMe, message}, index) => (
         fromMe ?
-          <Message key={index} author={username} messageText={messageText}/> :
-          <Message key={index} author={currentChat.username} messageText={messageText}/> 
+          <Message key={index} author={username} messageText={message}/> :
+          <Message key={index} author={chats.filter(obj => obj.id === chatId)[0].username} messageText={message}/> 
       ))}
     </List>
   );

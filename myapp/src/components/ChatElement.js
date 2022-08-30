@@ -1,16 +1,23 @@
 import { ListItemButton, ListItem } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ClearIcon from '@mui/icons-material/Clear';
+import { useDispatch } from 'react-redux';
+import { deleteChat } from '../store/chatsActions';
 
 export default function ChatElement(props) {
+
+  const dispatch = useDispatch();
+
   return(
     <ListItem disablePadding>
-      <ListItemButton variant="outlined" color="inherit" component={Link} to={`/chats/${props.chatId}`}>
+      <ListItemButton component={Link} to={`/chats/${props.chatId}`} style={{width: "inherit"}}>
         {props.name}
       </ListItemButton>
-      {/* <Button variant="contained" color="error" style={{maxWidth: '36.5px', minWidth: '36.5px'}}>
-        <ClearIcon/>
-      </Button> */}
+      <ListItemButton component={Link} to={'/chats'} onClick={()=>{
+        dispatch(deleteChat(props.chatId));
+      }}>
+        <ClearIcon />
+      </ListItemButton>
     </ListItem>
   )
 }

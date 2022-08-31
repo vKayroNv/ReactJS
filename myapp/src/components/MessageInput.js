@@ -16,7 +16,7 @@ export default function MessageInput() {
 
   const disableInput = chatId === undefined || !chats.some(obj => obj.id === chatId) ? true : false;
 
-  const sendMessage = () => {
+  const sendMessage = () => dispatch => { // правильно ли я понимаю, что на этом все готово?
     dispatch(addMessage({
       chatId: chatId,
       fromMe: true,
@@ -38,7 +38,7 @@ export default function MessageInput() {
         <TextField disabled={disableInput} fullWidth label="Сообщение" variant="filled" value={messageText} onChange={event => setMessageText(event.target.value)} inputProps={{style: {color: "white"}}} />
         <Button disabled={disableInput} fullWidth variant="contained" onClick={() => { 
             if (messageText) {
-                sendMessage();
+                dispatch(sendMessage());
                 setMessageText('');
             }
         }}>Отправить</Button>

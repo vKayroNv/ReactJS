@@ -5,6 +5,7 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { addMessage } from '../store/messagesActions';
 import { useParams } from 'react-router-dom';
 import { getAnswerphone, getChats } from '../store/selectors';
+import { addMessageThunk } from '../store/thunks';
 
 export default function MessageInput() {
 
@@ -24,13 +25,7 @@ export default function MessageInput() {
     }));
 
     if (answerphone)
-      setTimeout(() => {
-        dispatch(addMessage({
-          chatId: chatId,
-          fromMe: false,
-          message: "Hello!"
-        }));
-      }, 2000);
+      dispatch(addMessageThunk({chatId}));
   }
 
   return (

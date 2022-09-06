@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { addMessageThunk } from './thunks';
 
 export const messagesSlice = createSlice({
   name: 'messages',
@@ -12,6 +13,11 @@ export const messagesSlice = createSlice({
     removeMessagesByUserId: (state, action) => {
       state.value = state.value.filter(obj => obj.chatId !== action.payload);
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(addMessageThunk.fulfilled, (state, action) => {
+      addMessage(action.payload);
+    })
   },
 })
 

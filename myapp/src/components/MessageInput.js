@@ -5,6 +5,7 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { addMessage } from '../store/messagesActions';
 import { useParams } from 'react-router-dom';
 import { getAnswerphone, getChats } from '../store/selectors';
+import { addMessageThunk } from '../store/thunks';
 
 export default function MessageInput() {
 
@@ -16,7 +17,7 @@ export default function MessageInput() {
 
   const disableInput = chatId === undefined || !chats.some(obj => obj.id === chatId) ? true : false;
 
-  const sendMessage = () => {
+  const sendMessage = () => dispatch => { // правильно ли я понимаю, что на этом все готово?
     dispatch(addMessage({
       chatId: chatId,
       fromMe: true,
@@ -24,13 +25,7 @@ export default function MessageInput() {
     }));
 
     if (answerphone)
-      setTimeout(() => {
-        dispatch(addMessage({
-          chatId: chatId,
-          fromMe: false,
-          message: "Hello!"
-        }));
-      }, 2000);
+      dispatch(addMessageThunk({chatId}));
   }
 
   return (
@@ -38,7 +33,7 @@ export default function MessageInput() {
         <TextField disabled={disableInput} fullWidth label="Сообщение" variant="filled" value={messageText} onChange={event => setMessageText(event.target.value)} inputProps={{style: {color: "white"}}} />
         <Button disabled={disableInput} fullWidth variant="contained" onClick={() => { 
             if (messageText) {
-                sendMessage();
+                dispatch(sendMessage());
                 setMessageText('');
             }
         }}>Отправить</Button>

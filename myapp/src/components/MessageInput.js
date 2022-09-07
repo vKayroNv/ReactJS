@@ -17,7 +17,7 @@ export default function MessageInput() {
 
   const disableInput = chatId === undefined || !chats.some(obj => obj.id === chatId) ? true : false;
 
-  const sendMessage = () => dispatch => { // правильно ли я понимаю, что на этом все готово?
+  const sendMessage = () => dispatch => {
     dispatch(addMessage({
       chatId: chatId,
       fromMe: true,

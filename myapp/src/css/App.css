@@ -22,12 +22,14 @@ html, body {
   flex: 4;
 }
 
-.chats-block .MuiList-root {
+.MuiList-root {
   overflow: auto;
+}
+
+.chats-block .MuiList-root {
   height: 73.5vh;
 }
 
 .messages-block .MuiList-root {
-  overflow: auto;
   height: 78vh;
 }

@@ -2,7 +2,7 @@ import { addMessage } from "./messagesActions";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const addMessageThunk = createAsyncThunk(
-  'addMessageThunk',
+  "addMessageThunk",
   (args, {dispatch}) => {
     const {chatId} = args;
 

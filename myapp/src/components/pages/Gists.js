@@ -3,7 +3,8 @@ import { useEffect, useCallback} from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { getGists } from '../../store/selectors'
 import { getAllGists } from '../../store/thunks'
-import { List, ListItem, Button, Container } from '@mui/material';
+import { Button, Container } from '@mui/material';
+import GistElement from '../GistElement'
 
 export default function Gists() {
 
@@ -18,18 +19,22 @@ export default function Gists() {
     requestGists();
   },[]);
 
-  const renderGist = useCallback((gist) => <ListItem key={gist.id}>{gist.description}</ListItem>, []);
+  const renderGist = useCallback((gist) => <GistElement key={gist.id} gist={gist} />, []);
 
   if (loading) {
     return  <Loading /> ;
   }
   if (error) {
     return (
-      <Container>
+      <Container className="center-screen">
         <h3>Error: {error}</h3 >
         <Button onClick={requestGists}>Retry</Button>
       </Container> 
     );
   }
-  return <List>{gists.map(renderGist)}</List>;
+  return(
+    <Container maxWidth="xl">
+      {gists.map(renderGist)}
+    </Container>
+  );
 }

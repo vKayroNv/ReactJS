@@ -28,6 +28,6 @@ export const gistsSlice = createSlice({
   }
 });
 
-export const { setGistsState } = gistsSlice.actions
+//export const { } = gistsSlice.actions
 
 export default gistsSlice.reducer

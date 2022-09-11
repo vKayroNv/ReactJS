@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updatePassword } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCr4OpZLbloIKUyrF9Lf3dpvfChkIm7HXE",
@@ -53,16 +53,16 @@ export const loginAsync = createAsyncThunk(
       var errMessage;
       switch (err.code) {
         case 'auth/invalid-email':
-          alert('Введенный email имеет неверный формат');
+          errMessage = 'Введенный email имеет неверный формат';
           break;
         case 'auth/user-not-found':
-          alert('Пользователя с таким email не существует');
+          errMessage = 'Пользователя с таким email не существует';
           break;
         case 'auth/wrong-password':
-          alert('Неправильный пароль');
+          errMessage = 'Неправильный пароль';
           break;
         default:
-          alert(err.message);
+          errMessage = err.message;
           break;
       }
       throw new Error(errMessage);
@@ -78,7 +78,29 @@ export const logoutAsync = createAsyncThunk(
       await signOut(auth);
     }
     catch (err) {
+      var errMessage = err.message;
+      throw new Error(errMessage);
+    };
+  }
+)
+
+export const changePasswordAsync = createAsyncThunk(
+  'changePasswordAsync',
+  async function(newPassword) {
+    const auth = getAuth();
+    try {
+      await updatePassword(auth.currentUser, newPassword);
+    }
+    catch (err) {
       var errMessage;
+      switch (err.code) {
+        case 'auth/weak-password':
+          errMessage = 'Пароль должен быть больше 6 символов';
+          break;
+        default:
+          errMessage = err.message;
+          break;
+      }
       throw new Error(errMessage);
     };
   }

@@ -1,35 +1,50 @@
 import { useState } from 'react';
-import { Button, TextField, Container, Checkbox, FormControlLabel } from '@mui/material';
+import { Button, TextField, Container } from '@mui/material';
 
-import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { changeUsername } from '../../store/usernameActions';
-import { changeAnswerphoneState } from '../../store/answerphoneActions';
-import { getAnswerphone, getUsername } from '../../store/selectors';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { changePasswordAsync, logoutAsync } from '../../services/firebase';
+import { getFirebaseApp } from "../../store/selectors";
+import Loading from './Loading'
 
 export default function Profile() {
 
   const dispatch = useDispatch();
+  const { loading, error } = useSelector(getFirebaseApp, shallowEqual);
 
-  const [tempUsername, setTempUsername] = useState(useSelector(getUsername, shallowEqual));
-  const [tempAnswerphone, setTempAnswerphone] = useState(useSelector(getAnswerphone, shallowEqual));
+  const [newPassword, setNewPassword] = useState('');
+  const [newPasswordRepeat, setNewPasswordRepeat] = useState('');
 
-  const tempChangeUsername = input => {
-    setTempUsername(input);
+  function changePassword() {
+    if (newPassword !== newPasswordRepeat) {
+      alert('Пароли не совпадают');
+      return;
+    }
+
+    dispatch(changePasswordAsync(newPassword));
   }
-  const tempChangeAnswerphone = () => {
-    setTempAnswerphone(!tempAnswerphone);
+
+  if (loading) {
+    return  <Loading /> ;
+  }
+
+  if (error) {
+    alert(error);
   }
 
   return(
     <>
       <br/>
       <Container>
-        <TextField autoFocus fullWidth label="Ваше имя" variant="filled" value={tempUsername} onChange={event => tempChangeUsername(event.target.value)} inputProps={{style: {color: "white"}}} />
-          <FormControlLabel control={<Checkbox checked={tempAnswerphone} onChange={event => tempChangeAnswerphone()} />} label="Включить автоответчик" />
         <Button fullWidth variant="contained" onClick={() => { 
-          dispatch(changeUsername(tempUsername));
-          dispatch(changeAnswerphoneState(tempAnswerphone))
-          alert('Изменения сохранены');
+          dispatch(logoutAsync());
+        }}>Выйти из аккаунта</Button>
+        <p>Сменить пароль</p>
+        <TextField fullWidth label="Новый пароль" variant="filled" inputProps={{style: {color: "white"}}} type="password"
+          value={newPassword} onChange={event => setNewPassword(event.target.value)} />
+        <TextField fullWidth label="Новый пароль еще раз" variant="filled" inputProps={{style: {color: "white"}}} type="password"
+          value={newPasswordRepeat} onChange={event => setNewPasswordRepeat(event.target.value)} />
+        <Button fullWidth variant="contained" onClick={() => { 
+          changePassword();
         }}>Сохранить</Button>
       </Container>
     </>

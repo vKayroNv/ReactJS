@@ -1,4 +1,4 @@
-import { Container, Box, Tabs, Tab, Typography } from "@mui/material";
+import { Container, Box, Tabs, Tab } from "@mui/material";
 import PropTypes from 'prop-types';
 import React from "react";
 import Login from "../Login";

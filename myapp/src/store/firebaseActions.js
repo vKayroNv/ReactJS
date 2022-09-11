@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { loginAsync, logoutAsync, registerAsync } from '../services/firebase';
+import { loginAsync, logoutAsync, registerAsync, changePasswordAsync } from '../services/firebase';
 
 export const firebaseSlice = createSlice({
   name: 'firebase',
@@ -42,6 +42,18 @@ export const firebaseSlice = createSlice({
       state.error = null;
     },
     [logoutAsync.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [changePasswordAsync.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [changePasswordAsync.fulfilled]: (state) => {
+      state.loading = false;
+      state.error = null;
+    },
+    [changePasswordAsync.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },

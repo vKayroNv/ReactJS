@@ -16,3 +16,7 @@ export function getUsername(state) {
 export function getMessagesByUserId(state, id) {
   return state.messages.value.filter(obj => obj.chatId === id);
 }
+
+export function getGists(state) {
+  return state.gists.value
+}

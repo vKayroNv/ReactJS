@@ -1,9 +1,9 @@
 import { Container } from "@mui/material";
 
-export default function Home() {
+export default function Loading() {
   return(
     <Container className="center-screen">
-      <h1>Главная страница</h1>
+      <h3>Загрузка страницы</h3>
     </Container>
-  );
+  )
 }

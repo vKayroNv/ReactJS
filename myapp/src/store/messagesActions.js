@@ -14,10 +14,10 @@ export const messagesSlice = createSlice({
       state.value = state.value.filter(obj => obj.chatId !== action.payload);
     }
   },
-  extraReducers: (builder) => {
-    builder.addCase(addMessageThunk.fulfilled, (state, action) => {
+  extraReducers: {
+    [addMessageThunk.fulfilled]: (state, action) => {
       addMessage(action.payload);
-    })
+    }
   },
 })
 

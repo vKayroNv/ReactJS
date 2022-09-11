@@ -5,6 +5,7 @@ import Profile from './components/pages/Profile';
 import Chats from './components/pages/Chats';
 import Home from './components/pages/Home';
 import Header from './components/pages/Header';
+import Gists from './components/pages/Gists';
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
           <Route path="/profile" element={<Profile />}/>
           <Route path="/chats" element={<Chats />}/>
           <Route path="/chats/:chatId" element={<Chats />}/>
+          <Route path="/gists" element={<Gists />}/>
+          <Route path="/gists/:gistId" element={<Gists />}/>
         </Routes>
       </BrowserRouter>
     </>

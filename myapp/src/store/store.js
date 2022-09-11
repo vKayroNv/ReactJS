@@ -15,6 +15,8 @@ import usernameReducer from './usernameActions'
 import chatsReducer from './chatsActions'
 import answerphoneReducer from './answerphoneActions'
 import messagesReducer from './messagesActions'
+import gistsReducer from './gistsActions';
+
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 const persistConfig = {
@@ -28,6 +30,7 @@ const reducers = combineReducers({
   chats: chatsReducer,
   answerphone: answerphoneReducer,
   messages: messagesReducer,
+  gists: gistsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

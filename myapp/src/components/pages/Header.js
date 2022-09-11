@@ -9,6 +9,7 @@ export default function Header() {
           <Button color="inherit" to="/" component={Link}>Главная</Button>
           <Button color="inherit" to="/profile" component={Link}>Профиль</Button>
           <Button color="inherit" to="/chats" component={Link}>Чаты</Button>
+          <Button color="inherit" to="/gists" component={Link}>Gists</Button>
         </Toolbar>
     </AppBar>
   );

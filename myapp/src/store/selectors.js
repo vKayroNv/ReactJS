@@ -20,3 +20,7 @@ export function getMessagesByUserId(state, id) {
 export function getGists(state) {
   return state.gists.value
 }
+
+export function getFirebaseApp(state) {
+  return state.firebaseApp;
+}

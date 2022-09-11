@@ -16,6 +16,7 @@ import chatsReducer from './chatsActions'
 import answerphoneReducer from './answerphoneActions'
 import messagesReducer from './messagesActions'
 import gistsReducer from './gistsActions';
+import firebaseReducer from './firebaseActions';
 
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
@@ -31,6 +32,7 @@ const reducers = combineReducers({
   answerphone: answerphoneReducer,
   messages: messagesReducer,
   gists: gistsReducer,
+  firebaseApp: firebaseReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

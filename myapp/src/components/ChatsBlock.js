@@ -2,30 +2,54 @@ import { Button, List } from '@mui/material';
 import ChatElement from './ChatElement';
 
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { addChat } from '../store/chatsActions';
 import { getChats } from '../store/selectors';
+import { addChatAsync, getChatsAsync } from '../services/repos/chats';
+import { auth } from '../services/firebase';
+import Loading from './pages/Loading'
+import {  useCallback, useEffect } from 'react';
 
 export default function ChatsBlock(){
 
   const dispatch = useDispatch();
-  const chats = useSelector(getChats, shallowEqual);
+  const { chats, loading, error } = useSelector(getChats, shallowEqual);
 
   const createChat = () => {
-    const name = prompt("Введите название чата");
+    const uid = prompt("Введите uid пользователя");
 
-    if (!name) {
-      alert("Название чата не было введено");
+    if (!uid) {
+      alert("uid не был введен");
       return;
     }
 
-    dispatch(addChat(name));
+    if (uid === auth.currentUser.uid) {
+      alert("Нельзя вводить свой uid");
+    }
+
+    dispatch(addChatAsync(uid));
+    dispatch(getChatsAsync());
+  }
+
+  useEffect(()=>{
+    dispatch(getChatsAsync());
+  }, []);
+
+  const renderChatElement = useCallback((chat) => {
+    return <ChatElement key={chat.id} chatId={chat.id} name={chat.userDisplayName} />;
+  })
+
+  if (loading) {
+    return  <Loading /> ;
+  }
+
+  if (error) {
+    alert(error);
   }
 
   return(
     <>
       <Button fullWidth color="inherit" size="large" onClick={createChat}>Добавить чат</Button>
       <List>
-        {chats.map((value, index) => <ChatElement key={index} chatId={value.id} name={value.username} />)}
+        {chats.map(renderChatElement)}
       </List>
     </>
   );

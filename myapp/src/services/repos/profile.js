@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { auth } from "../firebase"
 import { updatePassword, updateProfile } from "firebase/auth";
+import { auth, firestore } from "../firebase"
+import { updateDoc, doc } from "firebase/firestore";
 
 export const getDisplayNameAsync = createAsyncThunk(
   "getDisplayNameAsync",
@@ -19,6 +20,14 @@ export const changeDisplayNameAsync = createAsyncThunk(
   async function(displayName) {
     try {
       await updateProfile(auth.currentUser, {displayName: displayName });
+
+      const user = doc(firestore, 'users', auth.currentUser.uid);
+
+      await updateDoc(user, 
+      {
+        displayName: displayName
+      });
+
       return displayName;
     }
     catch (err) {

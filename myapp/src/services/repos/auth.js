@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { auth } from "../firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { auth, firestore } from "../firebase"
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const registerAsync = createAsyncThunk(
   'registerAsync',
@@ -8,6 +9,14 @@ export const registerAsync = createAsyncThunk(
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(auth.currentUser, {displayName: email });
+      
+      const newUser = doc(firestore, 'users', auth.currentUser.uid);
+      
+      await setDoc(newUser, 
+      { 
+        email: email,
+        displayName: email
+      });
     }
     catch (err) {
       var errMessage;

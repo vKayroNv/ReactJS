@@ -4,7 +4,7 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 import { addMessage } from '../store/messagesActions';
 import { useParams } from 'react-router-dom';
-import { getAnswerphone, getChats } from '../store/selectors';
+import { getChats } from '../store/selectors';
 import { addMessageThunk } from '../store/thunks';
 
 export default function MessageInput() {
@@ -13,7 +13,6 @@ export default function MessageInput() {
   const [messageText, setMessageText] = useState('');
   const { chatId } = useParams();
   const chats = useSelector(getChats, shallowEqual);
-  const answerphone = useSelector(getAnswerphone, shallowEqual);
 
   const disableInput = chatId === undefined || !chats.some(obj => obj.id === chatId) ? true : false;
 
@@ -23,9 +22,6 @@ export default function MessageInput() {
       fromMe: true,
       message: messageText
     }));
-
-    if (answerphone)
-      dispatch(addMessageThunk({chatId}));
   }
 
   return (

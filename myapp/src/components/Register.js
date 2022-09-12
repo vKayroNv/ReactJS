@@ -1,7 +1,7 @@
 import { TextField, Button } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { registerAsync } from "../services/firebase";
+import { registerAsync } from "../services/repos/auth";
 import { getFirebaseApp } from "../store/selectors";
 import Loading from './pages/Loading'
 

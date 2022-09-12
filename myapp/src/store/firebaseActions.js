@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { loginAsync, logoutAsync, registerAsync, changePasswordAsync } from '../services/firebase';
+import { loginAsync, logoutAsync, registerAsync } from '../services/repos/auth';
+
+// test accs
+// user1@domain.com 123456
+// user2@domain.com 123456
 
 export const firebaseSlice = createSlice({
   name: 'firebase',
@@ -7,7 +11,12 @@ export const firebaseSlice = createSlice({
     loading: false,
     error: null
   },
-  reducers: { },
+  reducers: { 
+    clearState: (state) => {
+      state.loading = false;
+      state.error = null;
+    }
+  },
   extraReducers: {
     [registerAsync.pending]: (state) => {
       state.loading = true;
@@ -45,21 +54,9 @@ export const firebaseSlice = createSlice({
       state.loading = false;
       state.error = action.error.message;
     },
-    [changePasswordAsync.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [changePasswordAsync.fulfilled]: (state) => {
-      state.loading = false;
-      state.error = null;
-    },
-    [changePasswordAsync.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.error.message;
-    },
   }
 });
 
-//export const { } = firebaseSlice.actions
+export const { clearState } = firebaseSlice.actions
 
 export default firebaseSlice.reducer

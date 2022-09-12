@@ -11,9 +11,8 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
 
-import usernameReducer from './usernameActions'
+import profileReducer from './profileActions'
 import chatsReducer from './chatsActions'
-import answerphoneReducer from './answerphoneActions'
 import messagesReducer from './messagesActions'
 import gistsReducer from './gistsActions';
 import firebaseReducer from './firebaseActions';
@@ -27,9 +26,8 @@ const persistConfig = {
 }  
 
 const reducers = combineReducers({
-  username: usernameReducer,
+  profile: profileReducer,
   chats: chatsReducer,
-  answerphone: answerphoneReducer,
   messages: messagesReducer,
   gists: gistsReducer,
   firebaseApp: firebaseReducer,

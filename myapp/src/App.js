@@ -8,14 +8,12 @@ import Home from './components/pages/Home';
 import Header from './components/pages/Header';
 import Gists from './components/pages/Gists';
 
-import { getAuth } from "firebase/auth";
-import { firebaseApp } from './services/firebase';
+import { auth } from './services/firebase'
 
 function App() {
-  const [authenticated, setAuthenticated] = useState('false');
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    const auth = getAuth(firebaseApp);
     auth.onAuthStateChanged((user) => {
       if (user)
         setAuthenticated(true);

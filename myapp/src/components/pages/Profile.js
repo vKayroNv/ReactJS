@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, TextField, Container } from '@mui/material';
 
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { changePasswordAsync, logoutAsync } from '../../services/firebase';
-import { getFirebaseApp } from "../../store/selectors";
+import { changeDisplayNameAsync, changePasswordAsync, getDisplayNameAsync } from '../../services/repos/profile';
+import { logoutAsync } from '../../services/repos/auth';
+import { getProfile } from "../../store/selectors";
 import Loading from './Loading'
+import { clearState } from '../../store/profileActions';
 
 export default function Profile() {
 
   const dispatch = useDispatch();
-  const { loading, error } = useSelector(getFirebaseApp, shallowEqual);
+  const { uid, displayName, loading, error } = useSelector(getProfile, shallowEqual);
 
+  const [newDisplayName, setNewDisplayName] = useState(displayName);
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordRepeat, setNewPasswordRepeat] = useState('');
 
@@ -22,6 +25,15 @@ export default function Profile() {
 
     dispatch(changePasswordAsync(newPassword));
   }
+
+  function changeDisplayName() {
+    dispatch(changeDisplayNameAsync(newDisplayName));
+  }
+
+  useEffect(() => {
+    dispatch(getDisplayNameAsync());
+    setNewDisplayName(displayName);
+  }, [displayName])
 
   if (loading) {
     return  <Loading /> ;
@@ -35,9 +47,19 @@ export default function Profile() {
     <>
       <br/>
       <Container>
+        <p>Идентификатор: {uid}</p>
         <Button fullWidth variant="contained" onClick={() => { 
           dispatch(logoutAsync());
+          dispatch(clearState());
         }}>Выйти из аккаунта</Button>
+        
+        <p>Отображаемое имя</p>
+        <TextField fullWidth label="Имя" variant="filled" inputProps={{style: {color: "white"}}}
+          value={newDisplayName || ''} onChange={event => setNewDisplayName(event.target.value)} />
+        <Button fullWidth variant="contained" onClick={() => { 
+          changeDisplayName();
+        }}>Сохранить</Button>
+        
         <p>Сменить пароль</p>
         <TextField fullWidth label="Новый пароль" variant="filled" inputProps={{style: {color: "white"}}} type="password"
           value={newPassword} onChange={event => setNewPassword(event.target.value)} />
@@ -45,7 +67,7 @@ export default function Profile() {
           value={newPasswordRepeat} onChange={event => setNewPasswordRepeat(event.target.value)} />
         <Button fullWidth variant="contained" onClick={() => { 
           changePassword();
-        }}>Сохранить</Button>
+        }}>Изменить пароль</Button>
       </Container>
     </>
   );

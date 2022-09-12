@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { loginAsync } from "../services/firebase";
+import { loginAsync } from "../services/repos/auth";
 import { getFirebaseApp } from "../store/selectors";
 import Loading from './pages/Loading'
+import { clearState } from "../store/firebaseActions";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ export default function Login() {
 
   if (error) {
     alert(error);
+    dispatch(clearState());
   }
 
   return(

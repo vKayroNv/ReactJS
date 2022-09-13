@@ -2,7 +2,7 @@ import { ListItemButton, ListItem } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useDispatch } from 'react-redux';
-import { deleteChatAsync, getChatsAsync } from '../services/repos/chats';
+import { deleteChatAsync } from '../services/repos/chats';
 import { getMessagesAsync } from '../services/repos/messages';
 
 export default function ChatElement(props) {
@@ -18,7 +18,6 @@ export default function ChatElement(props) {
       </ListItemButton>
       <ListItemButton component={Link} to={'/chats'} onClick={()=>{
         dispatch(deleteChatAsync(props.chatId));
-        dispatch(getChatsAsync());
       }}>
         <ClearIcon />
       </ListItemButton>

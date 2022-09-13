@@ -9,6 +9,11 @@ export const messagesSlice = createSlice({
     error: null
   },
   reducers: {
+    clearMessages: (state) => {
+      state.messages = [];
+      state.loading = false;
+      state.error = null;
+    }
   },
   extraReducers: {
     [addMessageAsync.pending]: (state) => {
@@ -39,6 +44,6 @@ export const messagesSlice = createSlice({
   },
 })
 
-export const { addMessage, removeMessagesByUserId } = messagesSlice.actions
+export const { clearMessages } = messagesSlice.actions
 
 export default messagesSlice.reducer

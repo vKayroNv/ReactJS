@@ -10,7 +10,7 @@ export const profileSlice = createSlice({
     error: null,
   },
   reducers: {
-    clearState: (state) => {
+    clearProfile: (state) => {
       state.displayName = '';
       state.uid = '';
       state.loading = false;
@@ -60,6 +60,6 @@ export const profileSlice = createSlice({
   }
 })
 
-export const { clearState } = profileSlice.actions
+export const { clearProfile } = profileSlice.actions
 
 export default profileSlice.reducer

@@ -3,7 +3,7 @@ import { Button, TextField, Container } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 import { useParams } from 'react-router-dom';
-import { addMessageAsync, getMessagesAsync } from '../services/repos/messages'
+import { addMessageAsync } from '../services/repos/messages'
 
 export default function MessageInput() {
 
@@ -23,7 +23,6 @@ export default function MessageInput() {
                   message: messageText
                 }));
                 setMessageText('');
-                dispatch(getMessagesAsync(chatId));
             }
         }}>Отправить</Button>
       </Container>

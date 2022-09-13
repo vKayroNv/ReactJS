@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { auth, firestore } from "../firebase"
-import { collection, getDocs, getDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
+import { getDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 
 export const addChatAsync = createAsyncThunk(
@@ -34,18 +34,16 @@ export const deleteChatAsync = createAsyncThunk(
 
 export const getChatsAsync = createAsyncThunk(
   'getChatsAsync',
-  async function() {
+  async function(obj) {
     try {
-      const response = await getDocs(collection(firestore, 'chats'));
-
       var chatIds = [];
 
-      for (var i = 0; i < response.docs.length; i++) {
-        const data = response.docs[i].data();
+      for (var i = 0; i < obj.docs.length; i++) {
+        const data = obj.docs[i].data();
         if (data.users[0] === auth.currentUser.uid || data.users[1] === auth.currentUser.uid) {
           const userId = data.users.filter((userId) => userId !== auth.currentUser.uid)[0];
           const displayName = await getUserDisplayNameByUserId(userId);
-          chatIds = [...chatIds, {id: response.docs[i].id, userDisplayName: displayName}];
+          chatIds = [...chatIds, {id: obj.docs[i].id, userDisplayName: displayName}];
         }
       }
       return chatIds;

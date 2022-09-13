@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, getDocs, getDoc, doc, addDoc, setDoc, deleteDoc, updateDoc } from "firebase/firestore";
+import { collection, getDoc, doc, addDoc, updateDoc } from "firebase/firestore";
 import { auth, firestore } from "../firebase";
 import { getUserDisplayNameByUserId } from "./chats";
 

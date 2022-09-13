@@ -1,36 +1,73 @@
-import { useState } from 'react';
-import { Button, TextField, Container, Checkbox, FormControlLabel } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Button, TextField, Container } from '@mui/material';
 
-import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { changeUsername } from '../../store/usernameActions';
-import { changeAnswerphoneState } from '../../store/answerphoneActions';
-import { getAnswerphone, getUsername } from '../../store/selectors';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { changeDisplayNameAsync, changePasswordAsync, getDisplayNameAsync } from '../../services/repos/profile';
+import { logoutAsync } from '../../services/repos/auth';
+import { getProfile } from "../../store/selectors";
+import Loading from './Loading'
+import { clearState } from '../../store/profileActions';
 
 export default function Profile() {
 
   const dispatch = useDispatch();
+  const { uid, displayName, loading, error } = useSelector(getProfile, shallowEqual);
 
-  const [tempUsername, setTempUsername] = useState(useSelector(getUsername, shallowEqual));
-  const [tempAnswerphone, setTempAnswerphone] = useState(useSelector(getAnswerphone, shallowEqual));
+  const [newDisplayName, setNewDisplayName] = useState(displayName);
+  const [newPassword, setNewPassword] = useState('');
+  const [newPasswordRepeat, setNewPasswordRepeat] = useState('');
 
-  const tempChangeUsername = input => {
-    setTempUsername(input);
+  function changePassword() {
+    if (newPassword !== newPasswordRepeat) {
+      alert('Пароли не совпадают');
+      return;
+    }
+
+    dispatch(changePasswordAsync(newPassword));
   }
-  const tempChangeAnswerphone = () => {
-    setTempAnswerphone(!tempAnswerphone);
+
+  function changeDisplayName() {
+    dispatch(changeDisplayNameAsync(newDisplayName));
+  }
+
+  useEffect(() => {
+    dispatch(getDisplayNameAsync());
+    setNewDisplayName(displayName);
+  }, [displayName])
+
+  if (loading) {
+    return  <Loading /> ;
+  }
+
+  if (error) {
+    alert(error);
   }
 
   return(
     <>
       <br/>
       <Container>
-        <TextField autoFocus fullWidth label="Ваше имя" variant="filled" value={tempUsername} onChange={event => tempChangeUsername(event.target.value)} inputProps={{style: {color: "white"}}} />
-          <FormControlLabel control={<Checkbox checked={tempAnswerphone} onChange={event => tempChangeAnswerphone()} />} label="Включить автоответчик" />
+        <p>Идентификатор: {uid}</p>
         <Button fullWidth variant="contained" onClick={() => { 
-          dispatch(changeUsername(tempUsername));
-          dispatch(changeAnswerphoneState(tempAnswerphone))
-          alert('Изменения сохранены');
+          dispatch(logoutAsync());
+          dispatch(clearState());
+        }}>Выйти из аккаунта</Button>
+        
+        <p>Отображаемое имя</p>
+        <TextField fullWidth label="Имя" variant="filled" inputProps={{style: {color: "white"}}}
+          value={newDisplayName || ''} onChange={event => setNewDisplayName(event.target.value)} />
+        <Button fullWidth variant="contained" onClick={() => { 
+          changeDisplayName();
         }}>Сохранить</Button>
+        
+        <p>Сменить пароль</p>
+        <TextField fullWidth label="Новый пароль" variant="filled" inputProps={{style: {color: "white"}}} type="password"
+          value={newPassword} onChange={event => setNewPassword(event.target.value)} />
+        <TextField fullWidth label="Новый пароль еще раз" variant="filled" inputProps={{style: {color: "white"}}} type="password"
+          value={newPasswordRepeat} onChange={event => setNewPasswordRepeat(event.target.value)} />
+        <Button fullWidth variant="contained" onClick={() => { 
+          changePassword();
+        }}>Изменить пароль</Button>
       </Container>
     </>
   );

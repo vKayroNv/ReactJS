@@ -1,29 +1,54 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { v4 as uuidv4 } from 'uuid';
+import { addChatAsync, getChatsAsync, deleteChatAsync } from '../services/repos/chats';
 
 export const chatsSlice = createSlice({
   name: 'chats',
   initialState: {
-    value: 
-    [
-      {
-        id: uuidv4(),
-        username: "user1",
-      }
-    ]
+    loading: false,
+    error: null,
+    chats: [],
   },
   reducers: {
-    addChat: (state, action) => {
-      const newChat = {
-        id: uuidv4(),
-        username: action.payload
-      };
-      state.value = [...state.value, newChat]
-    },
-    deleteChat: (state, action) => {
-      state.value = state.value.filter((obj) => obj.id !== action.payload);
-    }
   },
+  extraReducers: {
+    [addChatAsync.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [addChatAsync.fulfilled]: (state) => {
+      state.loading = false;
+      state.error = null;
+    },
+    [addChatAsync.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [getChatsAsync.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [getChatsAsync.fulfilled]: (state, action) => {
+      state.chats = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
+    [getChatsAsync.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [deleteChatAsync.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [deleteChatAsync.fulfilled]: (state) => {
+      state.loading = false;
+      state.error = null;
+    },
+    [deleteChatAsync.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+  }
 })
 
 export const { addChat, deleteChat } = chatsSlice.actions

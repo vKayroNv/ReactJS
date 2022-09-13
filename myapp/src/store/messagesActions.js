@@ -1,23 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { addMessageThunk } from './thunks';
+import { addMessageAsync, getMessagesAsync } from '../services/repos/messages';
 
 export const messagesSlice = createSlice({
   name: 'messages',
   initialState: {
-    value: []
+    messages: [],
+    loading: false,
+    error: null
   },
   reducers: {
-    addMessage: (state, action) => {
-      state.value = [...state.value, action.payload];
-    },
-    removeMessagesByUserId: (state, action) => {
-      state.value = state.value.filter(obj => obj.chatId !== action.payload);
-    }
   },
   extraReducers: {
-    [addMessageThunk.fulfilled]: (state, action) => {
-      addMessage(action.payload);
-    }
+    [addMessageAsync.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [addMessageAsync.fulfilled]: (state) => {
+      state.loading = false;
+      state.error = null;
+    },
+    [addMessageAsync.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [getMessagesAsync.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [getMessagesAsync.fulfilled]: (state, action) => {
+      state.messages = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
+    [getMessagesAsync.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
   },
 })
 

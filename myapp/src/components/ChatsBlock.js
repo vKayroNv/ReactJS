@@ -12,6 +12,7 @@ export default function ChatsBlock(){
 
   const dispatch = useDispatch();
   const { chats, loading, error } = useSelector(getChats, shallowEqual);
+  const messages = useSelector(getChats, shallowEqual);
 
   const createChat = () => {
     const uid = prompt("Введите uid пользователя");

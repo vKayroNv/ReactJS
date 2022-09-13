@@ -1,28 +1,38 @@
 import { useParams } from 'react-router-dom';
-import { List } from '@mui/material';
-import { useSelector, shallowEqual } from 'react-redux'
+import { List, ListItem } from '@mui/material';
+import { useSelector, shallowEqual, useDispatch } from 'react-redux'
 
 import Message from './Message'
-import { getChats, getUsername, getMessagesByUserId } from '../store/selectors';
+import { getMessages } from '../store/selectors';
+import { useEffect } from 'react';
+import { getMessagesAsync } from '../services/repos/messages';
+import Loading from './pages/Loading'
 
 export default function MessagesBlock() {
 
-  // const { chatId } = useParams();
-  // const chats = useSelector(getChats, shallowEqual);
-  // const username = useSelector(getUsername, shallowEqual);
+  const dispatch = useDispatch();
+  const { chatId } = useParams();
+  const { messages, loading, error } = useSelector(getMessages, shallowEqual);
 
-  // const messages = useSelector((state) => getMessagesByUserId(state, chatId), shallowEqual);
+  useEffect(() =>{
+    dispatch(getMessagesAsync(chatId));
+  }, [])
 
-  // if (chatId === undefined || !chats.some(obj => obj.id === chatId))
-  //   return <List>Выберите чат</List>
+  if (chatId === undefined)
+    return <List><ListItem>Выберите чат</ListItem></List>
 
-  // return(
-  //   <List>
-  //     {messages.map(({fromMe, message}, index) => (
-  //       fromMe ?
-  //         <Message key={index} author={username} messageText={message}/> :
-  //         <Message key={index} author={chats.filter(obj => obj.id === chatId)[0].username} messageText={message}/> 
-  //     ))}
-  //   </List>
-  // );
+  if (loading) {
+    return  <Loading /> ;
+  }
+
+  if (error) {
+    alert(error);
+  }
+
+  return(
+    <List>
+      {messages.map((message, index) => (
+        <Message key={index} author={message.displayName} messageText={message.message}/>))}
+    </List>
+  );
 }

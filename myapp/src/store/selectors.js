@@ -1,6 +1,11 @@
 export function getChats(state) {
   return state.chats;
 }
+
+export function getMessages(state) {
+  return state.messages;
+}
+
 export function getChatsCount(state) {
   return state.chats.value.length;
 }

@@ -10,7 +10,8 @@ export const addChatAsync = createAsyncThunk(
       const newChat = doc(firestore, 'chats', uuidv4());
 
       await setDoc(newChat, {
-        users: [auth.currentUser.uid, uid]
+        users: [auth.currentUser.uid, uid],
+        messages: []
       });
     }
     catch (err) {
@@ -55,7 +56,7 @@ export const getChatsAsync = createAsyncThunk(
   }
 )
 
-const getUserDisplayNameByUserId = async function(userId) {
+export const getUserDisplayNameByUserId = async function(userId) {
   const user = await getDoc(doc(firestore,'users',userId));
   return user.data().displayName;
 }

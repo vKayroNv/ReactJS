@@ -3,27 +3,26 @@ import { List, ListItem } from '@mui/material';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux'
 
 import Message from './Message'
-import { getMessages } from '../store/selectors';
+import { getChats, getMessages } from '../store/selectors';
 import { useEffect } from 'react';
 import { getMessagesAsync } from '../services/repos/messages';
-import Loading from './pages/Loading'
 
 export default function MessagesBlock() {
 
   const dispatch = useDispatch();
   const { chatId } = useParams();
-  const { messages, loading, error } = useSelector(getMessages, shallowEqual);
+  const { messages, error, loading } = useSelector(getMessages, shallowEqual);
+  const { chats } = useSelector(getChats, shallowEqual);
 
   useEffect(() =>{
     dispatch(getMessagesAsync(chatId));
-  }, [])
+  }, [chats])
 
-  if (chatId === undefined)
+  if (!chatId)
     return <List><ListItem>Выберите чат</ListItem></List>
-
-  if (loading) {
-    return  <Loading /> ;
-  }
+    
+  if (loading)
+    return <List><ListItem><h3>Загрузка...</h3></ListItem></List>
 
   if (error) {
     alert(error);

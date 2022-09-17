@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getAllGists } from './thunks';
+import { getAllGists } from './gists';
 
 export const gistsSlice = createSlice({
   name: 'gists',

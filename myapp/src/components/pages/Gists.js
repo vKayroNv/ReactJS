@@ -2,7 +2,7 @@ import Loading from './Loading'
 import { useEffect, useCallback} from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { getGists } from '../../store/selectors'
-import { getAllGists } from '../../store/thunks'
+import { getAllGists } from '../../store/gists'
 import { Button, Container } from '@mui/material';
 import GistElement from '../GistElement'
 
@@ -17,7 +17,7 @@ export default function Gists() {
 
   useEffect(() => {
     requestGists();
-  },[]);
+  }, []);
 
   const renderGist = useCallback((gist) => <GistElement key={gist.id} gist={gist} />, []);
 

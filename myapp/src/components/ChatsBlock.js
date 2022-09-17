@@ -1,18 +1,16 @@
-import { Button, List } from '@mui/material';
+import { Button, List, ListItem } from '@mui/material';
 import ChatElement from './ChatElement';
 
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { getChats } from '../store/selectors';
-import { addChatAsync, getChatsAsync } from '../services/repos/chats';
+import { addChatAsync } from '../services/repos/chats';
 import { auth } from '../services/firebase';
-import Loading from './pages/Loading'
-import {  useCallback, useEffect } from 'react';
+import {  useCallback } from 'react';
 
 export default function ChatsBlock(){
 
   const dispatch = useDispatch();
-  const { chats, loading, error } = useSelector(getChats, shallowEqual);
-  const messages = useSelector(getChats, shallowEqual);
+  const { chats, error, loading } = useSelector(getChats, shallowEqual);
 
   const createChat = () => {
     const uid = prompt("Введите uid пользователя");
@@ -27,20 +25,12 @@ export default function ChatsBlock(){
     }
 
     dispatch(addChatAsync(uid));
-    dispatch(getChatsAsync());
   }
-
-  useEffect(()=>{
-    dispatch(getChatsAsync());
-  }, []);
 
   const renderChatElement = useCallback((chat) => {
     return <ChatElement key={chat.id} chatId={chat.id} name={chat.userDisplayName} />;
   })
 
-  if (loading) {
-    return  <Loading /> ;
-  }
 
   if (error) {
     alert(error);
@@ -50,7 +40,11 @@ export default function ChatsBlock(){
     <>
       <Button fullWidth color="inherit" size="large" onClick={createChat}>Добавить чат</Button>
       <List>
-        {chats.map(renderChatElement)}
+      {
+        loading ? 
+          <ListItem><h3>Загрузка...</h3></ListItem> :
+          chats.map(renderChatElement)
+      }
       </List>
     </>
   );

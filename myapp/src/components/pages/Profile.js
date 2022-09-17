@@ -6,7 +6,9 @@ import { changeDisplayNameAsync, changePasswordAsync, getDisplayNameAsync } from
 import { logoutAsync } from '../../services/repos/auth';
 import { getProfile } from "../../store/selectors";
 import Loading from './Loading'
-import { clearState } from '../../store/profileActions';
+import { clearProfile } from '../../store/profileActions';
+import { clearChats } from '../../store/chatsActions';
+import { clearMessages } from '../../store/messagesActions';
 
 export default function Profile() {
 
@@ -50,7 +52,9 @@ export default function Profile() {
         <p>Идентификатор: {uid}</p>
         <Button fullWidth variant="contained" onClick={() => { 
           dispatch(logoutAsync());
-          dispatch(clearState());
+          dispatch(clearProfile());
+          dispatch(clearChats());
+          dispatch(clearMessages());
         }}>Выйти из аккаунта</Button>
         
         <p>Отображаемое имя</p>

@@ -9,6 +9,11 @@ export const chatsSlice = createSlice({
     chats: [],
   },
   reducers: {
+    clearChats: (state) => {
+      state.chats = [];
+      state.loading = false;
+      state.error = null;
+    }
   },
   extraReducers: {
     [addChatAsync.pending]: (state) => {
@@ -51,6 +56,6 @@ export const chatsSlice = createSlice({
   }
 })
 
-export const { addChat, deleteChat } = chatsSlice.actions
+export const { clearChats } = chatsSlice.actions
 
 export default chatsSlice.reducer

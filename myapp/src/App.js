@@ -9,14 +9,28 @@ import Header from './components/pages/Header';
 import Gists from './components/pages/Gists';
 
 import { auth } from './services/firebase'
+import { useDispatch } from 'react-redux';
+import { subscribeAsync } from './services/repos/subscribe';
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [subscribeOnceCall, setSubscribeOnceCall] = useState(true);
+  const dispatch = useDispatch();
+
+  const subscribeOnFirestoreUpdates = () => {
+    if (!subscribeOnceCall) return;
+
+    console.log('test');
+    dispatch(subscribeAsync());
+    setSubscribeOnceCall(false);
+  }
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      if (user)
+      if (user) {
         setAuthenticated(true);
+        subscribeOnFirestoreUpdates();
+      }
       else
         setAuthenticated(false);
     });
